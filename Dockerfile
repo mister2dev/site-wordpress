@@ -10,6 +10,12 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
     apt-get update && apt-get install -y wget unzip && \
     apt-get clean
 
+# Installer les extensions nécessaires pour PostgreSQL
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pgsql pdo pdo_pgsql \
+    && docker-php-ext-enable pgsql pdo_pgsql
+
 # Installer le patch PostgreSQL (PG4WP)
 RUN mkdir -p /tmp/pg4wp && \
     cd /tmp/pg4wp && \
