@@ -9,10 +9,10 @@ RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /
 # Ajouter PG4WP (PostgreSQL for WordPress)
 RUN mkdir -p /tmp/pg4wp && \
     cd /tmp/pg4wp && \
-    wget https://github.com/kevinoid/postgresql-for-wordpress/archive/refs/heads/master.zip && \
-    unzip master.zip && \
-    cp -r postgresql-for-wordpress-master/pg4wp /var/www/html/wp-content/ && \
-    cp postgresql-for-wordpress-master/db.php /var/www/html/wp-content/ && \
+    wget https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/heads/old-master.zip && \
+    unzip old-master.zip && \
+    cp -r postgresql-for-wordpress-old-master/pg4wp /var/www/html/wp-content/ && \
+    cp postgresql-for-wordpress-old-master/db.php /var/www/html/wp-content/ && \
     rm -rf /tmp/pg4wp
 
 RUN usermod -s /bin/bash www-data
