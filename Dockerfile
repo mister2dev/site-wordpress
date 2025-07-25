@@ -1,5 +1,3 @@
-# You can change this to a different version of Wordpress available at
-# https://hub.docker.com/_/wordpress
 # Utilise une version stable de WordPress avec Apache
 FROM wordpress:5.3.2-apache
 
@@ -18,7 +16,7 @@ RUN mkdir -p /tmp/pg4wp && \
     wget -O pg4wp.zip https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/heads/hawk-codebase.zip && \
     unzip pg4wp.zip && \
     cp -r postgresql-for-wordpress-hawk-codebase/pg4wp /var/www/html/wp-content/plugins/ && \
-    cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
+    cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/plugins/ && \
     rm -rf /tmp/pg4wp
 
 # Appliquer les permissions
