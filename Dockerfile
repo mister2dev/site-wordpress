@@ -11,8 +11,8 @@ RUN mkdir -p /tmp/pg4wp && \
     cd /tmp/pg4wp && \
     wget https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/heads/old-master.zip && \
     unzip old-master.zip && \
-    cp -r postgresql-for-wordpress-old-master/pg4wp /var/www/html/wp-content/ && \
-    cp postgresql-for-wordpress-old-master/db.php /var/www/html/wp-content/ && \
+    cp -r postgresql-for-wordpress-hawk-codebase/pg4wp /var/www/html/wp-content/ && \
+    cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
     rm -rf /tmp/pg4wp
 
 RUN usermod -s /bin/bash www-data
