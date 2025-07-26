@@ -26,6 +26,9 @@ RUN mkdir -p /tmp/pg4wp && \
     cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
     rm -rf /tmp/pg4wp
 
+# Copier le wp-config.php personnalisé
+COPY wp-config.php /var/www/html/wp-config.php
+
 # Appliquer les bonnes permissions
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
