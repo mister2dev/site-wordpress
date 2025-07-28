@@ -22,11 +22,11 @@ define('NONCE_SALT',       'change‑this');
 
 define('WP_DEBUG', false);
 
-if (file_exists(__DIR__ . '/wp-content/db.php')) {
-    require_once(__DIR__ . '/wp-content/db.php');
-} else {
-    die('Erreur : db.php manquant — PG4WP non installé correctement');
-}
+// if (file_exists(__DIR__ . '/wp-content/db.php')) {
+//     require_once(__DIR__ . '/wp-content/db.php');
+// } else {
+//     die('Erreur : db.php manquant — PG4WP non installé correctement');
+// }
 
 if (!defined('ABSPATH'))
     define('ABSPATH', __DIR__ . '/');
