@@ -29,11 +29,23 @@ RUN sed -i "s/wp_die( 'PostgreSQL connection failed: '/if ( function_exists('wp_
 # Copier le wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
-# Créer un script de vérification de la connexion DB
+# Créer un script de vérification de la connexion DB avec PHP
 RUN echo '#!/bin/bash\n\
-until pg_isready -h $WORDPRESS_DB_HOST -p 5432 -U $WORDPRESS_DB_USER; do\n\
-  echo "Waiting for PostgreSQL..."\n\
-  sleep 2\n\
+echo "Waiting for PostgreSQL connection..."\n\
+until php -r "\
+\$host = getenv(\"WORDPRESS_DB_HOST\");\n\
+\$dbname = getenv(\"WORDPRESS_DB_NAME\");\n\
+\$user = getenv(\"WORDPRESS_DB_USER\");\n\
+\$pass = getenv(\"WORDPRESS_DB_PASSWORD\");\n\
+try {\n\
+  \$pdo = new PDO(\"pgsql:host=\$host;dbname=\$dbname\", \$user, \$pass);\n\
+  echo \"PostgreSQL connection successful!\\n\";\n\
+  exit(0);\n\
+} catch (PDOException \$e) {\n\
+  exit(1);\n\
+}"; do\n\
+  echo "PostgreSQL not ready, retrying in 3 seconds..."\n\
+  sleep 3\n\
 done\n\
 echo "PostgreSQL is ready!"\n\
 exec "$@"' > /usr/local/bin/wait-for-postgres.sh && \
