@@ -1,5 +1,4 @@
 services:
-  # Service WordPress
   - type: web
     name: wordpress
     env: docker
@@ -11,12 +10,12 @@ services:
       sizeGB: 5
     envVars:
       - key: WORDPRESS_DB_HOST
-        value: dpg-d2292o15pdvs738mvjcg-a:5432
+        value: dpg-d2292o15pdvs738mvjcg-a.render.com:5432 # Ajoutez .render.com
       - key: WORDPRESS_DB_NAME
         value: wordpress_db_w1hy
       - key: WORDPRESS_DB_USER
         value: wordpress_db_w1hy_user
       - key: WORDPRESS_DB_PASSWORD
-        value: wcrB4TznXn5fKHxVJFGrkoTdbdbogp4k
-      - key: WORDPRESS_DB_TYPE
-        value: pgsql
+        fromDatabase:
+          name: your-database-name
+          property: connectionString # Ou utilisez une env var sécurisée
