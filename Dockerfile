@@ -1,5 +1,5 @@
 # Utiliser une version stable de WordPress avec Apache
-FROM wordpress:6.5.3-apache
+FROM wordpress:5.3.2-apache
 
 # Passer en root pour installer des paquets
 USER root
