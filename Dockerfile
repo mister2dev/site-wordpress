@@ -26,12 +26,14 @@ RUN mkdir -p /tmp/pg4wp && \
     cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
     rm -rf /tmp/pg4wp
 
-# Patch pour éviter l'erreur wp_die() avant que WordPress soit initialisé
-RUN sed -i "s/wp_die( 'PostgreSQL connection failed: '/if ( function_exists('wp_die') ) { wp_die( 'PostgreSQL connection failed: '/" /var/www/html/wp-content/pg4wp/driver_pgsql.php && \
-    sed -i "s/pg_last_error() );/pg_last_error() ); } else { die( 'PostgreSQL connection failed: ' . pg_last_error() ); }/" /var/www/html/wp-content/pg4wp/driver_pgsql.php
-
-# Copier le wp-config.php personnalisé
+# Copier ton wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
+
+# Forcer Apache à écouter sur le port que Render fournit
+ENV APACHE_RUN_PORT=${PORT}
+
+# Exposer le port standard HTTP
+EXPOSE 80
 
 # Appliquer les bonnes permissions
 RUN chown -R www-data:www-data /var/www/html && \
