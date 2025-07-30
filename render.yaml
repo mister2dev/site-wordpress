@@ -10,12 +10,12 @@ services:
       sizeGB: 5
     envVars:
       - key: WORDPRESS_DB_HOST
-        value: dpg-d2292o15pdvs738mvjcg-a.render.com:5432 # Ajoutez .render.com
+        value: dpg-d2292o15pdvs738mvjcg-a.render.com:5432 # Hôte PostgreSQL
       - key: WORDPRESS_DB_NAME
-        value: wordpress_db_w1hy
+        value: wordpress_db_w1hy # Nom de la DB
       - key: WORDPRESS_DB_USER
-        value: wordpress_db_w1hy_user
+        value: wordpress_db_w1hy_user # Utilisateur
       - key: WORDPRESS_DB_PASSWORD
-        fromDatabase:
-          name: your-database-name
-          property: connectionString # Ou utilisez une env var sécurisée
+        value: wcrB4TznXn5fKHxVJFGrkoTdbdbogp4k # Mot de passe réel
+      - key: WORDPRESS_DB_TYPE
+        value: pgsql
