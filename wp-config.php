@@ -46,16 +46,6 @@ define('DISALLOW_FILE_EDIT', true);
 // Limiter les révisions
 define('WP_POST_REVISIONS', 3);
 
-// Vérifier et charger PG4WP
-if (file_exists(__DIR__ . '/wp-content/db.php')) {
-    require_once(__DIR__ . '/wp-content/db.php');
-} else {
-    error_log('Erreur : db.php manquant — PG4WP non installé correctement');
-    if (WP_DEBUG) {
-        die('Erreur : db.php manquant — PG4WP non installé correctement');
-    }
-}
-
 // Chemin absolu vers WordPress
 if (!defined('ABSPATH')) {
     define('ABSPATH', __DIR__ . '/');
