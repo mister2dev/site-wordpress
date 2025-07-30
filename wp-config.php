@@ -51,16 +51,6 @@ define('DISALLOW_FILE_EDIT', true);
 // 10. Limiter le nombre de révisions
 define('WP_POST_REVISIONS', 3);
 
-// 11. Charger PG4WP (le driver PostgreSQL)
-if (file_exists(__DIR__ . '/wp-content/db.php')) {
-    require_once(__DIR__ . '/wp-content/db.php');
-} else {
-    error_log('Erreur : PG4WP db.php manquant');
-    if (WP_DEBUG) {
-        die('Erreur : PG4WP db.php manquant — installation incorrecte');
-    }
-}
-
 // 12. Définir ABSPATH si ce n'est pas déjà fait
 if (!defined('ABSPATH')) {
     define('ABSPATH', __DIR__ . '/');

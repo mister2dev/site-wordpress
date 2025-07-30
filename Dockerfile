@@ -26,6 +26,13 @@ RUN mkdir -p /tmp/pg4wp && \
     cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
     rm -rf /tmp/pg4wp
 
+# Créer le dossier mu-plugins s’il n’existe pas
+RUN mkdir -p /var/www/html/wp-content/mu-plugins
+
+# Copier le loader PG4WP mu-plugin
+COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
+
+
 # Copier ton wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
