@@ -1,4 +1,33 @@
 <?php
+// Debug : afficher toutes les variables WP dans les logs PHP
+$env_vars = [
+    'WORDPRESS_DB_NAME',
+    'WORDPRESS_DB_USER',
+    'WORDPRESS_DB_PASSWORD',
+    'WORDPRESS_DB_HOST',
+    'WORDPRESS_AUTH_KEY',
+    'WORDPRESS_SECURE_AUTH_KEY',
+    'WORDPRESS_LOGGED_IN_KEY',
+    'WORDPRESS_NONCE_KEY',
+    'WORDPRESS_AUTH_SALT',
+    'WORDPRESS_SECURE_AUTH_SALT',
+    'WORDPRESS_LOGGED_IN_SALT',
+    'WORDPRESS_NONCE_SALT',
+];
+
+foreach ($env_vars as $var) {
+    error_log("$var=" . getenv($var));
+}
+
+// Spécifique : afficher aussi ce que WordPress a défini
+error_log('DB_NAME=' . (defined('DB_NAME') ? DB_NAME : 'non défini'));
+error_log('DB_USER=' . (defined('DB_USER') ? DB_USER : 'non défini'));
+error_log('DB_PASSWORD=' . (defined('DB_PASSWORD') ? DB_PASSWORD : 'non défini'));
+error_log('DB_HOST=' . (defined('DB_HOST') ? DB_HOST : 'non défini'));
+
+
+
+
 // 1. Définitions des constantes de connexion à la base de données,
 // issues des variables d'environnement (Render injecte ces variables)
 define('DB_NAME', getenv('WORDPRESS_DB_NAME') ?: '');
