@@ -1,7 +1,7 @@
 services:
   - type: web
     name: wordpress
-    env: docker
+    runtime: docker
     plan: free
     autoDeploy: false
     disk:
@@ -17,5 +17,5 @@ services:
         value: wordpress_db_w1hy_user
       - key: WORDPRESS_DB_PASSWORD
         value: wcrB4TznXn5fKHxVJFGrkoTdbdbogp4k
-      - key: WORDPRESS_DB_TYPE
+       - key: WORDPRESS_DB_TYPE
         value: pgsql
