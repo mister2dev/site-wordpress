@@ -35,14 +35,10 @@ COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 # Copier ton wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
-# ✅ Gestion dynamique du port Render
-# Render injecte $PORT automatiquement, ne jamais le fixer en dur
-RUN sed -i "s/80/${PORT}/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf
-EXPOSE ${PORT}
-
-# ✅ Debug : afficher toutes les variables env au démarrage
-RUN echo '#!/bin/bash\nprintenv\nexec apache2-foreground' > /start.sh && chmod +x /start.sh
-
+# ✅ Script de démarrage qui patch le port au runtime
+RUN echo '#!/bin/bash\nset -e\nsed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf\nsed -i "s/*:80/*:${PORT}/" /etc/apache2/sites-available/000-default.conf\nprintenv\nexec apache2-foreground' > /start.sh \
+    && chmod +x /start.sh
+    
 # Appliquer les bonnes permissions
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
