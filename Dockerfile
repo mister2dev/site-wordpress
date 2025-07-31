@@ -34,6 +34,14 @@ COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 # Copier wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
+# Vérifier que WordPress est installé, sinon le copier depuis l'image
+RUN if [ ! -f /var/www/html/index.php ]; then \
+      echo ">> Installation de WordPress par défaut"; \
+      cp -R /usr/src/wordpress/* /var/www/html/; \
+      chown -R www-data:www-data /var/www/html; \
+    fi
+
+
 # ✅ Script de démarrage qui adapte Apache au port Render
 RUN cat <<'EOF' > /start.sh
 #!/bin/bash
