@@ -4,11 +4,13 @@ FROM wordpress:6.5.3-apache
 # Passer root pour installer paquets et modifier Apache
 USER root
 
-# Corriger sources Debian archivées + installer wget/unzip
-RUN sed -i 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    sed -i 's|security.debian.org|archive.debian.org|g' /etc/apt/sources.list && \
-    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99ignore-valid && \
-    apt-get update && apt-get install -y wget unzip && apt-get clean
+# 🔧 Corriger les dépôts Debian archivés pour Stretch
+RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list && \
+    echo "Acquire::Check-Valid-Until \"false\";" > /etc/apt/apt.conf.d/99ignore-valid && \
+    echo "Acquire::AllowInsecureRepositories \"true\";" >> /etc/apt/apt.conf.d/99ignore-valid && \
+    apt-get -o Acquire::Check-Valid-Until=false update && \
+    apt-get -o Acquire::AllowInsecureRepositories=true install -y wget unzip && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installer extensions PHP nécessaires pour PostgreSQL
 RUN apt-get update && apt-get install -y libpq-dev \
