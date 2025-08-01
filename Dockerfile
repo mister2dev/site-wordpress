@@ -25,6 +25,7 @@ RUN mkdir -p /tmp/pg4wp && \
     mkdir -p /var/www/html/wp-content/pg4wp && \
     cp -r postgresql-for-wordpress-3.4.1/pg4wp/* /var/www/html/wp-content/pg4wp/ && \
     cp postgresql-for-wordpress-3.4.1/pg4wp/db.php /var/www/html/wp-content/ && \
+    mkdir -p /var/www/html/wp-includes && \
     cp postgresql-for-wordpress-3.4.1/wp-includes/class-wpdb.php /var/www/html/wp-includes/ && \
     rm -rf /tmp/pg4wp
 
