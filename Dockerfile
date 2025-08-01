@@ -17,14 +17,15 @@ RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pgsql pdo pdo_pgsql \
     && docker-php-ext-enable pgsql pdo_pgsql
 
-# Installer PG4WP
+# Installer PG4WP (version stable v3.4.1 avec class-wpdb.php)
 RUN mkdir -p /tmp/pg4wp && \
     cd /tmp/pg4wp && \
-    wget -O pg4wp.zip https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/heads/hawk-codebase.zip && \
+    wget -O pg4wp.zip https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/tags/v3.4.1.zip && \
     unzip pg4wp.zip && \
     mkdir -p /var/www/html/wp-content/pg4wp && \
-    cp -r postgresql-for-wordpress-hawk-codebase/pg4wp/* /var/www/html/wp-content/pg4wp/ && \
-    cp postgresql-for-wordpress-hawk-codebase/pg4wp/db.php /var/www/html/wp-content/ && \
+    cp -r postgresql-for-wordpress-3.4.1/pg4wp/* /var/www/html/wp-content/pg4wp/ && \
+    cp postgresql-for-wordpress-3.4.1/db.php /var/www/html/wp-content/ && \
+    cp postgresql-for-wordpress-3.4.1/wp-includes/class-wpdb.php /var/www/html/wp-includes/ && \
     rm -rf /tmp/pg4wp
 
 # Créer mu-plugins
