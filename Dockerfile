@@ -8,6 +8,12 @@ RUN apt-get update && \
     apt-get install -y wget unzip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Vérifier que WordPress est installé, sinon le copier depuis l'image
+RUN if [ ! -f /var/www/html/index.php ]; then \
+      cp -R /usr/src/wordpress/* /var/www/html/; \
+      chown -R www-data:www-data /var/www/html; \
+    fi
+
 # Installer extensions PHP nécessaires pour PostgreSQL
 RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pgsql pdo pdo_pgsql \
@@ -36,12 +42,6 @@ COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 
 # Copier wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
-
-# Vérifier que WordPress est installé, sinon le copier depuis l'image
-RUN if [ ! -f /var/www/html/index.php ]; then \
-      cp -R /usr/src/wordpress/* /var/www/html/; \
-      chown -R www-data:www-data /var/www/html; \
-    fi
 
 # Installer et activer Elementor + Cloudinary + Thème Astra
 RUN wp core download --allow-root && \
