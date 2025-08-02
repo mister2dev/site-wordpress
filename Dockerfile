@@ -44,8 +44,7 @@ COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 COPY wp-config.php /var/www/html/wp-config.php
 
 # Installer et activer Elementor + Cloudinary + Thème Astra
-RUN wp core download --allow-root && \
-    wp plugin install elementor --activate --allow-root && \
+RUN wp plugin install elementor --activate --allow-root && \
     wp plugin install cloudinary-image-management-and-manipulation-in-the-cloud-cdn --activate --allow-root && \
     wp theme install astra --activate --allow-root
 
