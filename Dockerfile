@@ -1,23 +1,19 @@
 # Utiliser une version stable de WordPress avec Apache
-FROM wordpress:6.5.3-apache
+FROM wordpress:6.8.2-apache
 
 # Passer root pour installer paquets et modifier Apache
 USER root
-
-# 🔧 Corriger les dépôts Debian archivés pour Stretch
-RUN echo "deb http://archive.debian.org/debian stretch main" > /etc/apt/sources.list && \
-    echo "Acquire::Check-Valid-Until \"false\";" > /etc/apt/apt.conf.d/99ignore-valid && \
-    echo "Acquire::AllowInsecureRepositories \"true\";" >> /etc/apt/apt.conf.d/99ignore-valid && \
-    apt-get -o Acquire::Check-Valid-Until=false update && \
-    apt-get -o Acquire::AllowInsecureRepositories=true install -y wget unzip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Installer extensions PHP nécessaires pour PostgreSQL
 RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pgsql pdo pdo_pgsql \
     && docker-php-ext-enable pgsql pdo_pgsql
 
-# Installer PG4WP (version stable v3.4.1 avec class-wpdb.php)
+# Installer WP-CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+
+# Installer PG4WP
 RUN mkdir -p /tmp/pg4wp && \
     cd /tmp/pg4wp && \
     wget -O pg4wp.zip https://github.com/PostgreSQL-For-Wordpress/postgresql-for-wordpress/archive/refs/tags/v3.4.1.zip && \
@@ -25,7 +21,6 @@ RUN mkdir -p /tmp/pg4wp && \
     mkdir -p /var/www/html/wp-content/pg4wp && \
     cp -r postgresql-for-wordpress-3.4.1/pg4wp/* /var/www/html/wp-content/pg4wp/ && \
     cp postgresql-for-wordpress-3.4.1/pg4wp/db.php /var/www/html/wp-content/ && \
-    mkdir -p /var/www/html/wp-includes && \
     cp postgresql-for-wordpress-3.4.1/wp-includes/class-wpdb.php /var/www/html/wp-includes/ && \
     rm -rf /tmp/pg4wp
 
@@ -40,13 +35,17 @@ COPY wp-config.php /var/www/html/wp-config.php
 
 # Vérifier que WordPress est installé, sinon le copier depuis l'image
 RUN if [ ! -f /var/www/html/index.php ]; then \
-      echo ">> Installation de WordPress par défaut"; \
       cp -R /usr/src/wordpress/* /var/www/html/; \
       chown -R www-data:www-data /var/www/html; \
     fi
 
+# Installer et activer Elementor + Cloudinary + Thème Astra
+RUN wp core download --allow-root && \
+    wp plugin install elementor --activate --allow-root && \
+    wp plugin install cloudinary-image-management-and-manipulation-in-the-cloud-cdn --activate --allow-root && \
+    wp theme install astra --activate --allow-root
 
-# ✅ Script de démarrage qui adapte Apache au port Render
+# Script de démarrage Render
 RUN cat <<'EOF' > /start.sh
 #!/bin/bash
 set -e
@@ -60,15 +59,12 @@ EOF
 
 RUN chmod +x /start.sh
 
-# Exposer le port (Render utilisera la variable $PORT)
+# Exposer le port (Render utilisera $PORT)
 EXPOSE 10000
 
 # Permissions WordPress
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
-
-# Rester root pour patcher Apache au runtime
-USER root
 
 # Lancer le script
 CMD ["/start.sh"]
