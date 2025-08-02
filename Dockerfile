@@ -43,10 +43,25 @@ COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 # Copier wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
-# Installer et activer Elementor + Cloudinary + Thème Astra
-RUN wp plugin install elementor --allow-root && \
-    wp plugin install cloudinary-image-management-and-manipulation-in-the-cloud-cdn --allow-root && \
-    wp theme install astra --allow-root
+# Installer Elementor + Cloudinary + Thème Astra
+# Créer le dossier plugins
+RUN mkdir -p /var/www/html/wp-content/plugins && \
+    mkdir -p /var/www/html/wp-content/themes
+
+# Elementor
+RUN curl -L https://downloads.wordpress.org/plugin/elementor.latest-stable.zip -o /tmp/elementor.zip && \
+    unzip /tmp/elementor.zip -d /var/www/html/wp-content/plugins/ && \
+    rm /tmp/elementor.zip
+
+# Cloudinary
+RUN curl -L https://downloads.wordpress.org/plugin/cloudinary-image-management-and-manipulation-in-the-cloud-cdn.latest-stable.zip -o /tmp/cloudinary.zip && \
+    unzip /tmp/cloudinary.zip -d /var/www/html/wp-content/plugins/ && \
+    rm /tmp/cloudinary.zip
+
+# Astra Theme
+RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tmp/astra.zip && \
+    unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
+    rm /tmp/astra.zip
 
 # Script de démarrage Render
 RUN cat <<'EOF' > /start.sh
