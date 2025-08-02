@@ -4,6 +4,10 @@ FROM wordpress:6.8.2-apache
 # Passer root pour installer paquets et modifier Apache
 USER root
 
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Installer extensions PHP nécessaires pour PostgreSQL
 RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pgsql pdo pdo_pgsql \
