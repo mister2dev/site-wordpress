@@ -65,7 +65,7 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
 
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
-COPY img/*.jpg /var/www/html/wp-content/uploads/2025/08/
+COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
 
 # Permissions sur les images copiées
 RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
