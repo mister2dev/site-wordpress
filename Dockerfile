@@ -63,6 +63,11 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
+# Installer Code Snippets plugin
+RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.zip -o /tmp/code-snippets.zip && \
+    unzip /tmp/code-snippets.zip -d /var/www/html/wp-content/plugins/ && \
+    rm /tmp/code-snippets.zip
+
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
 COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
