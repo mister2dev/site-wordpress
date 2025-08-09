@@ -37,13 +37,14 @@ RUN mkdir -p /tmp/pg4wp && \
 # Créer mu-plugins
 RUN mkdir -p /var/www/html/wp-content/mu-plugins
 
-# Copier loader PG4WP mu-plugin
+# Copier le loader PG4WP mu-plugin
 COPY pg4wp-loader.php /var/www/html/wp-content/mu-plugins/pg4wp-loader.php
 
-# Copier wp-config.php
+# Copier wp-config.php personnalisé
 COPY wp-config.php /var/www/html/wp-config.php
 
-# Installer plugins et thème
+# Installer Elementor + Cloudinary + Thème Astra
+# Créer le dossier plugins et themes
 RUN mkdir -p /var/www/html/wp-content/plugins && \
     mkdir -p /var/www/html/wp-content/themes
 
@@ -62,15 +63,32 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# Script de démarrage Render
+# **Création du dossier uploads et copie des images**
+RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
+COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
+
+# Permissions sur les images copiées
+RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
+    chmod -R 755 /var/www/html/wp-content/uploads/2025
+
+# Copier le .htaccess prêt
+COPY .htaccess /var/www/html/.htaccess
+RUN chown www-data:www-data /var/www/html/.htaccess
+
+# Script de démarrage Render avec flush permaliens
 RUN cat <<'EOF' > /start.sh
 #!/bin/bash
 set -e
 echo ">> Patch Apache avec PORT=$PORT"
 sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
 sed -i "s/*:80/*:${PORT}/" /etc/apache2/sites-available/000-default.conf
+
 echo ">> Variables d'environnement :"
 printenv | grep WORDPRESS_ || true
+
+echo ">> Flush des permaliens"
+wp rewrite flush --allow-root
+
 exec apache2-foreground
 EOF
 
