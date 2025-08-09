@@ -1,24 +1,25 @@
 # Utiliser une version stable de WordPress avec Apache
 FROM wordpress:6.8.2-apache
 
+# Passer root pour installer paquets et modifier Apache
 USER root
 
 RUN apt-get update && \
     apt-get install -y wget unzip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Vérifier que WordPress est installé
+# Vérifier que WordPress est installé, sinon le copier depuis l'image
 RUN if [ ! -f /var/www/html/index.php ]; then \
       cp -R /usr/src/wordpress/* /var/www/html/; \
       chown -R www-data:www-data /var/www/html; \
     fi
 
-# Extensions PHP PostgreSQL
+# Installer extensions PHP nécessaires pour PostgreSQL
 RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pgsql pdo pdo_pgsql \
     && docker-php-ext-enable pgsql pdo_pgsql
 
-# WP-CLI
+# Installer WP-CLI
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
@@ -61,33 +62,26 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# Copier le .htaccess prêt
-COPY .htaccess /var/www/html/.htaccess
-RUN chown www-data:www-data /var/www/html/.htaccess
-
-# Script de démarrage Render avec flush permaliens
+# Script de démarrage Render
 RUN cat <<'EOF' > /start.sh
 #!/bin/bash
 set -e
 echo ">> Patch Apache avec PORT=$PORT"
 sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
 sed -i "s/*:80/*:${PORT}/" /etc/apache2/sites-available/000-default.conf
-
 echo ">> Variables d'environnement :"
 printenv | grep WORDPRESS_ || true
-
-echo ">> Flush des permaliens"
-wp rewrite flush --allow-root
-
 exec apache2-foreground
 EOF
 
 RUN chmod +x /start.sh
 
+# Exposer le port (Render utilisera $PORT)
 EXPOSE 10000
 
 # Permissions WordPress
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
 
+# Lancer le script
 CMD ["/start.sh"]
