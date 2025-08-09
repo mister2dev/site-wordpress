@@ -75,20 +75,15 @@ RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
 COPY .htaccess /var/www/html/.htaccess
 RUN chown www-data:www-data /var/www/html/.htaccess
 
-# Script de démarrage Render avec flush permaliens
+# Script de démarrage Render
 RUN cat <<'EOF' > /start.sh
 #!/bin/bash
 set -e
 echo ">> Patch Apache avec PORT=$PORT"
 sed -i "s/Listen 80/Listen ${PORT}/" /etc/apache2/ports.conf
 sed -i "s/*:80/*:${PORT}/" /etc/apache2/sites-available/000-default.conf
-
 echo ">> Variables d'environnement :"
 printenv | grep WORDPRESS_ || true
-
-echo ">> Flush des permaliens"
-wp rewrite flush --allow-root
-
 exec apache2-foreground
 EOF
 
