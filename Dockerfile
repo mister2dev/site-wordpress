@@ -72,6 +72,9 @@ RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.z
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
 COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
 
+# Copie des CSS capturés (Elementor, plugins…)
+COPY wp-content /var/www/html/wp-content
+
 # Permissions sur les images copiées
 RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
     chmod -R 755 /var/www/html/wp-content/uploads/2025
