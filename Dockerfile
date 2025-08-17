@@ -80,7 +80,7 @@ RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
     chmod -R 755 /var/www/html/wp-content/uploads/2025
 
 # Importer les images dans la médiathèque WordPress
-RUN wp media import /var/www/html/wp-content/uploads/2025/08/*.jpg \
+RUN wp media import /var/www/html/wp-content/uploads/2025/08/*.webp \
     --allow-root \
     --path=/var/www/html \
     --featured_image
