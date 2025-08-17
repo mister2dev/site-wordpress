@@ -79,6 +79,12 @@ COPY wp-content /var/www/html/wp-content
 RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
     chmod -R 755 /var/www/html/wp-content/uploads/2025
 
+# Importer les images dans la médiathèque WordPress
+RUN wp media import /var/www/html/wp-content/uploads/2025/08/*.jpg \
+    --allow-root \
+    --path=/var/www/html \
+    --featured_image
+
 # Copier le .htaccess prêt
 COPY .htaccess /var/www/html/.htaccess
 RUN chown www-data:www-data /var/www/html/.htaccess
@@ -96,9 +102,6 @@ exec apache2-foreground
 EOF
 
 RUN chmod +x /start.sh
-
-# Exposer le port (Render utilisera $PORT)
-EXPOSE 10000
 
 # Permissions WordPress
 RUN chown -R www-data:www-data /var/www/html && \
