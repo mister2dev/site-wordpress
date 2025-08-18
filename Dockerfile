@@ -71,6 +71,7 @@ RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.z
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
 COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
+COPY video/*.mp4 /var/www/html/wp-content/uploads/2025/08/
 
 # Copie des CSS capturés (Elementor, plugins…)
 COPY wp-content /var/www/html/wp-content
