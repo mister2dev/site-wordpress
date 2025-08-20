@@ -63,11 +63,11 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# Installer WPCode
-RUN curl -L https://downloads.wordpress.org/plugin/wpcode.zip -o /tmp/wpcode.zip && \
+# Installer WPCode plugin (remplace Code Snippets)
+RUN curl -L https://downloads.wordpress.org/plugin/insert-headers-and-footers.latest-stable.zip -o /tmp/wpcode.zip && \
     unzip /tmp/wpcode.zip -d /var/www/html/wp-content/plugins/ && \
     rm /tmp/wpcode.zip
-
+    
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
 COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
