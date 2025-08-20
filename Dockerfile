@@ -63,8 +63,8 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# WPCode (anciennement Insert Headers & Footers)
-RUN curl -L https://downloads.wordpress.org/plugin/wpcode.latest-stable.zip -o /tmp/wpcode.zip && \
+# Installer WPCode
+RUN curl -L https://downloads.wordpress.org/plugin/wpcode.zip -o /tmp/wpcode.zip && \
     unzip /tmp/wpcode.zip -d /var/www/html/wp-content/plugins/ && \
     rm /tmp/wpcode.zip
 
