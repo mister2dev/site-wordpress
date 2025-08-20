@@ -102,5 +102,10 @@ RUN chmod +x /start.sh
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
 
+# Préparer le dossier pour Code Snippets
+RUN mkdir -p /var/www/html/wp-content/uploads/code-snippets && \
+    chown -R www-data:www-data /var/www/html/wp-content/uploads && \
+    chmod -R 755 /var/www/html/wp-content/uploads
+
 # Lancer le script
 CMD ["/start.sh"]
