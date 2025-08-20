@@ -53,20 +53,20 @@ RUN curl -L https://downloads.wordpress.org/plugin/elementor.latest-stable.zip -
     unzip /tmp/elementor.zip -d /var/www/html/wp-content/plugins/ && \
     rm /tmp/elementor.zip
 
-# Cloudinary
-RUN curl -L https://downloads.wordpress.org/plugin/cloudinary-image-management-and-manipulation-in-the-cloud-cdn.latest-stable.zip -o /tmp/cloudinary.zip && \
-    unzip /tmp/cloudinary.zip -d /var/www/html/wp-content/plugins/ && \
-    rm /tmp/cloudinary.zip
+# # Cloudinary
+# RUN curl -L https://downloads.wordpress.org/plugin/cloudinary-image-management-and-manipulation-in-the-cloud-cdn.latest-stable.zip -o /tmp/cloudinary.zip && \
+#     unzip /tmp/cloudinary.zip -d /var/www/html/wp-content/plugins/ && \
+#     rm /tmp/cloudinary.zip
 
 # Astra Theme
 RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tmp/astra.zip && \
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# Installer Code Snippets plugin
-RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.zip -o /tmp/code-snippets.zip && \
-    unzip /tmp/code-snippets.zip -d /var/www/html/wp-content/plugins/ && \
-    rm /tmp/code-snippets.zip
+# # Installer Code Snippets plugin
+# RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.zip -o /tmp/code-snippets.zip && \
+#     unzip /tmp/code-snippets.zip -d /var/www/html/wp-content/plugins/ && \
+#     rm /tmp/code-snippets.zip
 
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
