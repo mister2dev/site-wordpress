@@ -63,11 +63,6 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
     unzip /tmp/astra.zip -d /var/www/html/wp-content/themes/ && \
     rm /tmp/astra.zip
 
-# # Installer Code Snippets plugin
-# RUN curl -L https://downloads.wordpress.org/plugin/code-snippets.latest-stable.zip -o /tmp/code-snippets.zip && \
-#     unzip /tmp/code-snippets.zip -d /var/www/html/wp-content/plugins/ && \
-#     rm /tmp/code-snippets.zip
-
 # WPCode (anciennement Insert Headers & Footers)
 RUN curl -L https://downloads.wordpress.org/plugin/wpcode.latest-stable.zip -o /tmp/wpcode.zip && \
     unzip /tmp/wpcode.zip -d /var/www/html/wp-content/plugins/ && \
@@ -80,6 +75,10 @@ COPY img/*.mp4 /var/www/html/wp-content/uploads/2025/08/
 
 # Copie des CSS capturés (Elementor, plugins…)
 COPY wp-content /var/www/html/wp-content
+
+# Copier les polices Playfair Display dans Elementor
+COPY fonts/*.woff2 /var/www/html/wp-content/uploads/elementor/google-fonts/fonts/
+
 
 # Permissions sur les images copiées
 RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
@@ -106,11 +105,6 @@ RUN chmod +x /start.sh
 # Permissions WordPress
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html
-
-# Préparer le dossier pour Code Snippets
-RUN mkdir -p /var/www/html/wp-content/uploads/code-snippets && \
-    chown -R www-data:www-data /var/www/html/wp-content/uploads && \
-    chmod -R 755 /var/www/html/wp-content/uploads
 
 # Lancer le script
 CMD ["/start.sh"]
