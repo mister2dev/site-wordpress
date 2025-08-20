@@ -67,7 +67,7 @@ RUN curl -L https://downloads.wordpress.org/theme/astra.latest-stable.zip -o /tm
 RUN curl -L https://downloads.wordpress.org/plugin/insert-headers-and-footers.latest-stable.zip -o /tmp/wpcode.zip && \
     unzip /tmp/wpcode.zip -d /var/www/html/wp-content/plugins/ && \
     rm /tmp/wpcode.zip
-    
+
 # **Création du dossier uploads et copie des images**
 RUN mkdir -p /var/www/html/wp-content/uploads/2025/08
 COPY img/*.webp /var/www/html/wp-content/uploads/2025/08/
@@ -75,10 +75,6 @@ COPY img/*.mp4 /var/www/html/wp-content/uploads/2025/08/
 
 # Copie des CSS capturés (Elementor, plugins…)
 COPY wp-content /var/www/html/wp-content
-
-# Copier les polices Playfair Display dans Elementor
-COPY fonts/*.woff2 /var/www/html/wp-content/uploads/elementor/google-fonts/fonts/
-
 
 # Permissions sur les images copiées
 RUN chown -R www-data:www-data /var/www/html/wp-content/uploads/2025 && \
